@@ -11,26 +11,56 @@ code-review prompt, not a proof of a bug.
 ## Install
 
 ```bash
-python -m pip install -e .          # from the repo root
+pip install mlguard-lint
 ```
 
-## Usage
+That's it — same command on Linux, macOS, and Windows. Requires Python 3.9+.
+
+## Use it
+
+Point it at a single file or a whole folder:
 
 ```bash
-mlguard scan_me.ipynb               # a single notebook or .py file
-mlguard src/                        # a directory (scanned recursively)
-mlguard notebooks/ --summary        # compact, one line per file (large scans)
-mlguard . --fail-on critical        # exit code 2 on any critical finding (CI gate)
-mlguard scan_me.ipynb --json out.json   # machine-readable output
-mlguard scan_me.ipynb --no-color    # plain text (colors auto-off when piped)
+mlguard-lint notebook.ipynb        # scan one notebook or .py file
+mlguard-lint src/                  # scan a directory (recursive)
 ```
 
-`PATH` may be a `.ipynb`, a `.py`, or a directory. With `--fail-on`, the process exits `2` once a
-finding at or above the given severity is present — useful as a CI gate.
+By default you get one clean line per issue:
+
+```
+mlguard-lint — notebook.ipynb
+
+notebook.ipynb
+  ✗ line 5    MLG001  Transformer fitted before split
+  ⚠ line 6    MLG006  Missing random_state
+  ⚠ line 6    MLG005  Classification split without stratify
+
+3 issue(s) in 1 of 1 file(s) · 1 critical, 2 warnings
+Tip: add --explain for why each matters and how to fix.
+```
+
+### Options
+
+```bash
+mlguard-lint notebook.ipynb --explain    # add the code, why it matters, and how to fix it
+mlguard-lint src/ --summary              # one line per file (handy for large folders)
+mlguard-lint . --fail-on critical        # exit code 2 on any critical finding (CI gate)
+mlguard-lint . --json out.json           # machine-readable output
+mlguard-lint notebook.ipynb --no-color   # plain text (colors auto-off when piped)
+```
+
+If the `mlguard-lint` command isn't on your PATH, the module form always works:
+
+```bash
+python -m mlguard_lint notebook.ipynb
+```
+
+> **Windows:** use **Windows Terminal** or **PowerShell** so the `✗ ⚠` symbols and colors render
+> correctly. On the legacy `cmd.exe` console, pass `--no-color` (or run `chcp 65001` once for UTF-8).
 
 ## Rules
 
-- **MLG001** — Transformer fitted before train/test split
+- **MLG001** — Transformer fitted before split
 - **MLG002** — Preprocessing outside cross-validation
 - **MLG003** — Model evaluated on training data
 - **MLG004** — Resampling before split/CV or outside an imblearn Pipeline
@@ -60,19 +90,20 @@ string constants, then runs ordered rule blocks that emit diagnostics. Because t
 analyzed as one program (no per-cell execution semantics), cross-cell dataflow is approximate and
 line numbers are notebook-global.
 
-## Tests
-
-```bash
-python -m pip install -e ".[dev]"
-python -m pytest tests/test_rules.py -q
-```
-
-Each rule has a synthetic fixture under `tests/notebooks/` plus clean controls that must stay silent.
-
 ## Limitation
 
 This is a heuristic static analyzer. It is useful for surfacing risks, not for proving that every
 warning is a real bug. Treat diagnostics as prompts for a closer look during code review.
+
+## Development
+
+```bash
+git clone <repo> && cd mlguard
+pip install -e ".[dev]"          # editable install + pytest/build/twine
+python -m pytest tests/test_rules.py -q
+```
+
+Each rule has a synthetic fixture under `tests/notebooks/` plus clean controls that must stay silent.
 
 ## License
 

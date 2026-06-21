@@ -8,7 +8,7 @@ import pathlib
 
 import pytest
 
-from mlguard.scanner import scan_code, scan_path
+from mlguard_lint.scanner import scan_code, scan_path
 
 NB_DIR = pathlib.Path(__file__).parent / "notebooks"
 

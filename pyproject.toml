@@ -3,19 +3,46 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mlguard"
+name = "mlguard-lint"
 version = "0.1.1"
 description = "Static CLI linter for silent methodological errors in scikit-learn workflows"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.9"
+authors = [{ name = "Mohammad Almalke" }]
+keywords = [
+    "scikit-learn",
+    "data-leakage",
+    "linter",
+    "static-analysis",
+    "machine-learning",
+    "mlops",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+dev = ["pytest>=8", "build", "twine"]
 
 [project.scripts]
-mlguard = "mlguard.cli:main"
+mlguard-lint = "mlguard_lint.cli:main"
+
+# [project.urls]
+# Homepage = "https://github.com/<user>/mlguard-lint"   # fill in once the repo is public
 
 [tool.setuptools]
-packages = ["mlguard"]
+packages = ["mlguard_lint"]
