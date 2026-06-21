@@ -1,0 +1,25 @@
+# --- secrets — never commit ---
+kaggle.json
+credentials.json
+.kaggle/
+*.pem
+*.key
+.env
+.netrc
+access_token
+*access_token*
+
+# --- python / build ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# --- editor / OS ---
+.idea/
+.vscode/
+.DS_Store
