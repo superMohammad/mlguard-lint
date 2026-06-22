@@ -1,4 +1,4 @@
-# MLGuard
+# MLGuard-lint
 
 A lightweight static analyzer for **silent methodological errors** in scikit-learn ML workflows —
 data leakage, invalid evaluation, and unsound train/test splits that run without raising an error
